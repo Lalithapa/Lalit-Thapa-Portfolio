@@ -1,670 +1,899 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <title>Lalit Thapa Portfolio</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
-  <meta name='impact-site-verification' value='51e46122-5c58-4a0e-8a22-5c9f3216f809' />
-  <!-- Favicons -->
-  <link
-    href="https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/avatar7_YT1t7gTLl.png?ik-sdk-version=javascript-1.4.3&updatedAt=1661233063719"
-    rel="icon">
-  <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lalit Thapa — Senior Shopify Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0a;--surface:#111111;--surface2:#181818;
+  --border:#222222;--border2:#2d2d2d;
+  --text:#f0ede8;--muted:#7a7774;--accent:#d4f060;
+  --tag-bg:#1a1a1a;--tag-border:#2a2a2a;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
 
-  <!-- Bootstrap CSS File -->
-  <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+/* ── PARTICLE CANVAS (full hero bg) ── */
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 
-  <!-- Libraries CSS Files -->
-  <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-  <link href="lib/animate/animate.min.css" rel="stylesheet">
-  <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
-  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-  <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+/* ── GEO CANVAS (right-side 3D object) ── */
+#geo-canvas{
+  position:absolute;
+  right:-60px; top:50%;
+  transform:translateY(-50%);
+  width:min(55vw,640px);
+  height:min(55vw,640px);
+  pointer-events:none;
+  z-index:1;
+  opacity:0;
+}
 
-  <!-- Main Stylesheet File -->
-  <link href="css/style.css" rel="stylesheet">
+/* glow halo behind the object */
+#geo-glow{
+  position:absolute;
+  right:calc(min(55vw,640px)*0.15);
+  top:50%;transform:translateY(-50%);
+  width:min(40vw,480px);height:min(40vw,480px);
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(212,240,96,0.18) 0%,rgba(212,240,96,0.04) 50%,transparent 70%);
+  pointer-events:none;
+  z-index:0;
+  filter:blur(20px);
+  opacity:0;
+  transition:opacity 0.5s;
+}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:20px 40px;background:rgba(10,10,10,0.0);backdrop-filter:blur(0px);border-bottom:1px solid transparent;transition:background 0.4s,border-color 0.4s,backdrop-filter 0.4s}
+nav.scrolled{background:rgba(10,10,10,0.92);backdrop-filter:blur(14px);border-bottom-color:var(--border)}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:-0.5px;color:var(--text);text-decoration:none;opacity:0}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:var(--muted);font-size:13px;letter-spacing:0.05em;text-decoration:none;text-transform:uppercase;font-weight:500;transition:color 0.2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--accent);color:#0a0a0a;font-size:13px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:9px 20px;text-decoration:none;transition:opacity 0.2s;opacity:0}
+.nav-cta:hover{opacity:0.85}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:140px 40px 80px;position:relative;border-bottom:1px solid var(--border);overflow:hidden}
+.hero-content{position:relative;z-index:2;max-width:52%}
+.hero-bg-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(80px,18vw,200px);color:rgba(255,255,255,0.015);white-space:nowrap;pointer-events:none;letter-spacing:-5px;user-select:none;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;color:var(--accent);text-transform:uppercase;border:1px solid rgba(212,240,96,0.3);padding:6px 14px;margin-bottom:40px;opacity:0}
+.hero-tag::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(52px,7.5vw,96px);line-height:0.95;letter-spacing:-3px;margin-bottom:32px;overflow:hidden}
+.hero-name .line1,.hero-name .line2{display:block;transform:translateY(110%)}
+.hero-name .line2{color:transparent;-webkit-text-stroke:1px rgba(240,237,232,0.3)}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap;position:relative;z-index:2}
+.hero-desc{max-width:480px;font-size:16px;line-height:1.7;color:rgba(240,237,232,0.6);font-weight:300;opacity:0;transform:translateY(20px)}
+.hero-desc strong{color:var(--text);font-weight:500}
+.hero-stats{display:flex;gap:48px}
+.stat-item{text-align:right}
+.stat-num{font-family:'Syne',sans-serif;font-weight:700;font-size:36px;color:var(--accent);letter-spacing:-2px}
+.stat-label{font-size:12px;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase;margin-top:2px}
+.hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:12px;z-index:2;opacity:0}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--muted),transparent);animation:scrollAnim 2s ease infinite}
+@keyframes scrollAnim{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ── MARQUEE ── */
+.marquee-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;overflow:hidden;background:var(--surface)}
+.marquee-track{display:flex;gap:0;width:max-content;animation:marquee 22s linear infinite}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);white-space:nowrap;padding:0 32px}
+.marquee-item.accent{color:var(--accent)}
+.marquee-sep{color:var(--border2);padding:0 8px}
+
+/* ── SECTIONS ── */
+.section{padding:100px 40px}
+.section-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── SCROLL GLOW DIVIDER ── */
+.glow-divider{
+  position:relative;height:2px;overflow:visible;
+  background:transparent;margin:0;
+}
+.glow-divider::after{
+  content:'';position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  box-shadow:0 0 24px 6px rgba(212,240,96,0.5);
+  transition:none;
+}
+.glow-divider.lit::after{
+  animation:glowLine 1.2s ease forwards;
+}
+@keyframes glowLine{
+  0%{width:0;opacity:0}
+  30%{opacity:1}
+  100%{width:100%;opacity:0.6}
+}
+
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:60px}
+.about-heading{font-family:'Syne',sans-serif;font-weight:700;font-size:clamp(32px,4vw,52px);letter-spacing:-2px;line-height:1.05}
+.about-heading em{font-style:normal;color:var(--accent)}
+.about-right p{font-size:16px;color:rgba(240,237,232,0.65);line-height:1.8;margin-bottom:20px;font-weight:300}
+.about-right p strong{color:var(--text);font-weight:500}
+.timeline{margin-top:48px;display:flex;flex-direction:column;gap:0}
+.timeline-item{display:grid;grid-template-columns:120px 1fr;gap:24px;padding:24px 0;border-top:1px solid var(--border)}
+.timeline-year{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.05em;padding-top:3px;line-height:1.5}
+.timeline-role{font-weight:500;font-size:15px;color:var(--text);margin-bottom:4px}
+.timeline-company{font-size:13px;color:var(--accent);font-family:'DM Mono',monospace}
+.timeline-desc{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6}
+
+/* ── SKILLS ── */
+.skills-section{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border);margin-top:60px}
+.skill-card{background:var(--surface);padding:28px 24px;transition:background 0.2s;position:relative;overflow:hidden}
+.skill-card::after{content:'';position:absolute;inset:0;opacity:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(212,240,96,0.07),transparent 65%);pointer-events:none;transition:opacity 0.3s}
+.skill-card:hover::after{opacity:1}
+.skill-card:hover{background:var(--surface2)}
+.skill-icon{font-size:22px;margin-bottom:12px}
+.skill-name{font-family:'Syne',sans-serif;font-weight:600;font-size:15px;margin-bottom:6px}
+.skill-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.skill-bar{height:2px;background:var(--border2);margin-top:14px;overflow:hidden}
+.skill-fill{height:100%;background:var(--accent);transform-origin:left;transform:scaleX(0);box-shadow:0 0 8px rgba(212,240,96,0.6)}
+
+/* ── PROJECTS ── */
+.projects-section{border-top:1px solid var(--border)}
+.projects-grid{margin-top:60px;display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.project-card{background:var(--bg);padding:36px 40px;display:grid;grid-template-columns:1fr auto;align-items:start;gap:40px;transition:background 0.3s;position:relative;overflow:hidden}
+.project-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);transform:scaleY(0);transition:transform 0.3s ease;transform-origin:top}
+/* glow sweep on hover */
+.project-card::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 0% 50%,rgba(212,240,96,0.05) 0%,transparent 60%);opacity:0;transition:opacity 0.4s}
+.project-card:hover{background:#0e0e0e}
+.project-card:hover::before{transform:scaleY(1)}
+.project-card:hover::after{opacity:1}
+.project-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px}
+.project-name{font-family:'Syne',sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.5px;margin-bottom:10px}
+.project-desc{font-size:14px;color:rgba(240,237,232,0.55);line-height:1.7;max-width:600px;font-weight:300}
+.project-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.tag{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;background:var(--tag-bg);border:1px solid var(--tag-border);color:var(--muted);padding:4px 10px}
+.project-right{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.project-link{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.08em;color:var(--accent);text-decoration:none;text-transform:uppercase;border:1px solid rgba(212,240,96,0.3);padding:8px 16px;transition:all 0.2s;white-space:nowrap}
+.project-link:hover{background:var(--accent);color:#0a0a0a;box-shadow:0 0 20px rgba(212,240,96,0.4)}
+.project-type{font-size:11px;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase}
+
+/* ── WINS ── */
+.acc-section{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.acc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);margin-top:60px}
+.acc-card{background:var(--surface);padding:36px 32px;transition:background 0.2s;position:relative;overflow:hidden}
+.acc-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);transform:scaleX(0);transition:transform 0.5s ease;transform-origin:left}
+.acc-card:hover::after{transform:scaleX(1)}
+.acc-card:hover{background:var(--surface2)}
+.acc-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);margin-bottom:16px}
+.acc-title{font-family:'Syne',sans-serif;font-weight:600;font-size:17px;margin-bottom:10px;line-height:1.3}
+.acc-body{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* ── CONTACT ── */
+.contact-section{border-top:1px solid var(--border)}
+.contact-inner{margin-top:60px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.contact-heading{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(40px,6vw,72px);letter-spacing:-3px;line-height:0.95}
+.contact-heading .accent{color:var(--accent)}
+.contact-sub{font-size:15px;color:var(--muted);margin-top:24px;line-height:1.7;font-weight:300}
+.contact-links{display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.contact-link{background:var(--bg);padding:22px 24px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--text);transition:background 0.2s}
+.contact-link:hover{background:var(--surface2)}
+.contact-link-label{font-size:13px;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:4px}
+.contact-link-val{font-size:15px;font-weight:500}
+.contact-arrow{font-size:18px;color:var(--muted);transition:color 0.2s,transform 0.2s}
+.contact-link:hover .contact-arrow{color:var(--accent);transform:translate(3px,-3px)}
+.email-big{margin-top:32px}
+.email-big a{font-family:'Syne',sans-serif;font-weight:700;font-size:clamp(18px,2.5vw,26px);color:var(--text);text-decoration:none;letter-spacing:-0.5px;border-bottom:2px solid var(--accent);padding-bottom:4px;transition:color 0.2s}
+.email-big a:hover{color:var(--accent)}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:32px 40px;display:flex;align-items:center;justify-content:space-between}
+.footer-left,.footer-right{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted)}
+
+/* ── SCROLL PROGRESS BAR ── */
+#progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--accent);box-shadow:0 0 10px rgba(212,240,96,0.7);width:0%;z-index:999}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  #geo-canvas,#geo-glow{display:none}
+  .hero-content{max-width:100%}
+}
+@media(max-width:768px){
+  nav{padding:16px 20px}
+  .nav-links{display:none}
+  .hero{padding:120px 20px 60px}
+  .hero-bottom{flex-direction:column;align-items:flex-start}
+  .hero-stats{gap:24px}
+  .about-grid,.contact-inner{grid-template-columns:1fr}
+  .section{padding:60px 20px}
+  .project-card{grid-template-columns:1fr;padding:24px 20px}
+  .project-right{align-items:flex-start}
+  .acc-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:12px;padding:24px 20px;text-align:center}
+}
+</style>
 </head>
+<body>
 
-<body id="page-top">
+<div id="progress-bar"></div>
 
-  <!--/ Nav Star /-->
-  <nav class="navbar navbar-b navbar-trans navbar-expand-md fixed-top" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand js-scroll" href="#page-top">Lalit Thapa</a>
-      <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarDefault"
-        aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <div class="navbar-collapse collapse justify-content-end" id="navbarDefault">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link js-scroll active" href="#home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll" href="#about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll" href="#service">Skills</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll" href="#work">Portfolio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll" href="#blog">Hobby</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll" href="#contact">Contact</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <!--/ Nav End /-->
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo">LT<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:lalitthapa2108@gmail.com" class="nav-cta">Hire Me</a>
+</nav>
 
-  <!--/ Intro Skew Star /-->
-  <div id="home" class="intro route bg-image"
-    style="background-image: url(https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/IMG_1092_rKLBt3mpb.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1661233085358)">
-    <div class="overlay-itro"></div>
-    <div class="intro-content display-table">
-      <div class="table-cell">
-        <div class="container">
-          <!--<p class="display-6 color-d">Hello, world!</p>-->
-          <h1 class="intro-title mb-4">I am Lalit Thapa</h1>
-          <p class="intro-subtitle"><span class="text-slider-items">Web Developer,Frontend Developer,Web Designer</span><strong class="text-slider"></strong></p>
-          <!-- <p class="pt-3"><a class="btn btn-primary btn js-scroll px-4" href="#about" role="button">Learn More</a></p> -->
-        </div>
-      </div>
-    </div>
+<!-- HERO -->
+<section class="hero" id="home">
+  <canvas id="hero-canvas"></canvas>
+  <div id="geo-glow"></div>
+  <canvas id="geo-canvas"></canvas>
+
+  <div class="hero-bg-text" id="hero-bg-text">SHOPIFY</div>
+
+  <div class="hero-content">
+    <div class="hero-tag" id="hero-tag">Available for freelance &amp; full-time</div>
+    <h1 class="hero-name" id="hero-name">
+      <span class="line1">Lalit</span>
+      <span class="line2">Thapa</span>
+    </h1>
   </div>
-  <!--/ Intro Skew End /-->
 
-  <section id="about" data-aos="zoom-in-up" class="about-mf sect-pt4 route">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="box-shadow-full">
-            <div class="row">
-              <div class="col-md-6" data-aos="zoom-in">
-                <div class="row">
-                  <div class="col-sm-6 col-md-5">
-                    <div class="about-img">
-                      <img
-                        src="https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/avatar7_YT1t7gTLl.png?ik-sdk-version=javascript-1.4.3&updatedAt=1661233063719"
-                        class="img-fluid rounded b-shadow-a" alt="avatar">
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-md-7">
-                    <div class="about-info">
-                      <p><span class="title-s">Name: </span> <span>Lalit Thapa</span></p>
-                      <p><span class="title-s">Profile: </span> <span>Front-End Developer</span></p>
-                      <p><span class="title-s">Email: </span> <span>lalithapaji@gmail.com</span></p>
-                      <p><span class="title-s">Phone: </span> <span>+91-9871776722</span></p>
-                      <p><span class="title-s">Qualification: </span> <span>BCA (Pursuing)</span></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="skill-mf">
-                  <p class="title-s">Skill</p>
-                  <span>HTML5</span> <span class="pull-right">85%</span>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="85"
-                      aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <span>CSS3</span> <span class="pull-right">75%</span>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0"
-                      aria-valuemax="100"></div>
-                  </div>
-                  <span>JAVASCRIPT</span> <span class="pull-right">70%</span>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="90" aria-valuemin="0"
-                      aria-valuemax="100"></div>
-                  </div>
-                  <span>REACT</span> <span class="pull-right">40%</span>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                      aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6" data-aos="zoom-in">
-                <div class="about-me pt-3 pt-md-0">
-                  <div class="title-box-2">
-                    <h5 class="title-left text-dark">
-                      About me
-                    </h5>
-                  </div>
-                  <p class="lead">
-                    Hey, I am Lalit Thapa, I work as a web developer. Every day, I spend my entire day experimenting with HTML, CSS, BOOTSTRAP, JS, and React,
-                    among other things.
-                  </p>
-                  <p class="lead">
-                    I enjoy creating websites with the end user in mind. I'm curious, and I enjoy work that pushes me
-                    to learn new things and stretch in new directions.
-                  </p>
-                  <p class="lead">
-                    <ul class="list-unstyled lead">
-                      <li>
-                        <p>Designed 10+ front-end Web Interface for UE Developer </p>
-                      </li>
-                      <li>
-                        <p>
-                          I’m always open to discussing product design work or job opportunities.
-                        </p>
-                      </li>
-                      <li>
-                        <a href="/Lalit-cv/Lalit_Thapa_CV.pdf"><button class="cvBtn">GET MY CV</button></a>
-                      </li>
-                    </ul>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+  <div class="hero-bottom">
+    <p class="hero-desc" id="hero-desc">
+      <strong>Senior Shopify Developer</strong> with 4.5+ years building high-performance e-commerce storefronts. Specializing in <strong>Shopify Plus, custom theme dev, React &amp; Remix</strong>, and turning complex business needs into fast, beautiful stores.
+    </p>
+    <div class="hero-stats" id="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" data-target="18" data-suffix="+">0</div>
+        <div class="stat-label">Stores Built</div>
       </div>
-    </div>
-  </section>
-
-  <!--/ Section Services Star /-->
-  <section id="service" class="services-mf route">
-    <div class="container">
-      <div class="row" data-aos="fade-up" data-aos-duration="1000">
-        <div class="col-sm-12">
-          <div class="title-box text-center">
-            <h3 class="title-a">
-              Skills
-            </h3>
-            <!-- <p class="subtitle-a">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-            </p> -->
-            <div class="line-mf"></div>
-          </div>
-        </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="15" data-prefix="₹" data-suffix="L">0</div>
+        <div class="stat-label">Cost Saved</div>
       </div>
-      <div class="row" data-aos="fade-up" data-aos-duration="1000">
-        <div class="col-md-4">
-          <div class="service-box">
-            <div class="service-ico">
-              <span class="ico-circle"><i class="ion-monitor"></i></span>
-            </div>
-            <div class="service-content">
-              <h2 class="s-title">Web Design</h2>
-              <p class="s-description text-center">
-                Designing by using HTML and CSS and adding behaviour using javascript is much more exciting .
-                Images, fonts and  color selection plays a major role in enhancing a web page.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="service-box">
-            <div class="service-ico">
-              <span class="ico-circle"><i class="ion-code-working"></i></span>
-            </div>
-            <div class="service-content">
-              <h2 class="s-title">Web Development</h2>
-              <p class="s-description text-center">
-                I am a frontend developer and build websites using HTML, CSS,bootstrap and  Javascript.
-                I am much interested in developing new things which excite me a lot. :)
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="service-box">
-            <div class="service-ico">
-              <span class="ico-circle"><i class="ion-camera"></i></span>
-            </div>
-            <div class="service-content">
-              <h2 class="s-title">Photography</h2>
-              <p class="s-description text-center">
-                A picture says a thousand words. Photography keeps memories alive and prosperous because it freezes a scene that lasts forever.I click Pictures of Beautiful Scenaries of mountains and nature.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row" data-aos="fade-up" data-aos-duration="1000">
-        <div class="col-md-4">
-          <div class="service-box">
-            <div class="service-ico">
-              <span class="ico-circle"><i class="ion-android-phone-portrait"></i></span>
-            </div>
-            <div class="service-content">
-              <h2 class="s-title">Responsive Design</h2>
-              <p class="s-description text-center">
-                Responsive web design provides an optimal experience, easy
-                reading and easy navigation with a minimum of resizing on different devices such as desktops, mobiles and tabs .
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="service-box">
-            <div class="service-ico">
-              <span class="ico-circle"><i class="ion-paintbrush"></i></span>
-            </div>
-            <div class="service-content">
-              <h2 class="s-title">Graphic Design</h2>
-              <p class="s-description text-center">
-                I also have decent hand in developing website with Figma and creating . I have been interested in the Art and Creativity. Some popular tools that I use is Adobe Photoshop (basic).
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="service-box">
-            <div class="service-ico">
-              <span class="ico-circle"><i class="ion-stats-bars"></i></span>
-            </div>
-            <div class="service-content">
-              <h2 class="s-title">Other Skills</h2>
-              <p class="s-description text-center">
-                I also have decent hand in developing website with WordPress.
-                blockchain, Github are my other fields of interest. Currently, I am investing my free time in studying blockchain.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-  <!--/ Section Services End /-->
-
-  <div data-aos="fade-up" class="section-counter paralax-mf bg-image"
-    style="background-image: url(https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/pexels-bri-schneiter-346529_fO4U16P-d.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1661233206234)">
-    <div class="overlay-mf"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-3 col-lg-3">
-          <div class="counter-box">
-            <div class="counter-ico">
-              <span class="ico-circle"><i class="ion-checkmark-round"></i></span>
-            </div>
-            <div class="counter-num">
-              <p class="counter">10</p>
-              <span class="counter-text">WORK COMPLETED</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3 col-lg-3">
-          <div class="counter-box pt-4 pt-md-0">
-            <div class="counter-ico">
-              <span class="ico-circle"><i class="ion-ios-calendar-outline"></i></span>
-            </div>
-            <div class="counter-num">
-              <p class="counter">1</p>
-              <span class="counter-text">YEARS EXPERIENCE</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3 col-lg-3">
-          <div class="counter-box pt-4 pt-md-0">
-            <div class="counter-ico">
-              <span class="ico-circle"><i class="ion-ios-people"></i></span>
-            </div>
-            <div class="counter-num">
-              <p class="counter">10</p>
-              <span class="counter-text">PROJECTS</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3 col-lg-3">
-          <div class="counter-box pt-4 pt-md-0">
-            <div class="counter-ico">
-              <span class="ico-circle"><i class="ion-ribbon-a"></i></span>
-            </div>
-            <div class="counter-num">
-              <p class="counter">1</p>
-              <span class="counter-text">INTERNSHIP</span>
-            </div>
-          </div>
-        </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="4" data-suffix="×">0</div>
+        <div class="stat-label">Speed Gains</div>
       </div>
     </div>
   </div>
 
-  <!--/ Section Portfolio Star /-->
-  <section id="work" class="portfolio-mf sect-pt4 route">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12" data-aos="fade-up">
-          <div class="title-box text-center">
-            <h4 class="title-a">
-              Portfolio
-            </h4>
-            <p class="subtitle-a">
-              Projects That I Have Worked On Till Date.
-            </p>
-            <div class="line-mf"></div>
+  <div class="hero-scroll" id="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item accent">Shopify Plus</span><span class="marquee-sep">—</span>
+    <span class="marquee-item">Liquid</span><span class="marquee-sep">—</span>
+    <span class="marquee-item accent">React &amp; Next JS</span><span class="marquee-sep">—</span>
+    <span class="marquee-item">Remix</span><span class="marquee-sep">—</span>
+    <span class="marquee-item accent">GraphQL</span><span class="marquee-sep">—</span>
+    <span class="marquee-item">Tailwind</span><span class="marquee-sep">—</span>
+    <span class="marquee-item accent">GSAP &amp; Three.js</span><span class="marquee-sep">—</span>
+    <span class="marquee-item">AlpineJS</span><span class="marquee-sep">—</span>
+    <span class="marquee-item accent">Shopify App Dev</span><span class="marquee-sep">—</span>
+    <span class="marquee-item">Performance Optimization</span><span class="marquee-sep">—</span>
+    <span class="marquee-item accent">UI/UX Testing</span><span class="marquee-sep">—</span>
+    <span class="marquee-item">Third-Party APIs</span><span class="marquee-sep">—</span>
+    <span class="marquee-item accent">Shopify Plus</span><span class="marquee-sep">—</span>
+    <span class="marquee-item">Liquid</span><span class="marquee-sep">—</span>
+    <span class="marquee-item accent">React &amp; Next JS</span><span class="marquee-sep">—</span>
+    <span class="marquee-item">Remix</span><span class="marquee-sep">—</span>
+    <span class="marquee-item accent">GraphQL</span><span class="marquee-sep">—</span>
+    <span class="marquee-item">Tailwind</span><span class="marquee-sep">—</span>
+    <span class="marquee-item accent">GSAP &amp; Three.js</span><span class="marquee-sep">—</span>
+    <span class="marquee-item">AlpineJS</span><span class="marquee-sep">—</span>
+    <span class="marquee-item accent">Shopify App Dev</span><span class="marquee-sep">—</span>
+    <span class="marquee-item">Performance Optimization</span><span class="marquee-sep">—</span>
+    <span class="marquee-item accent">UI/UX Testing</span><span class="marquee-sep">—</span>
+    <span class="marquee-item">Third-Party APIs</span><span class="marquee-sep">—</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="glow-divider" id="div1"></div>
+<section class="section" id="about">
+  <div class="section-label">About</div>
+  <div class="about-grid">
+    <div>
+      <h2 class="about-heading gsap-reveal">Building stores that <em>actually</em> perform.</h2>
+      <div class="timeline">
+        <div class="timeline-item gsap-slide">
+          <div class="timeline-year">Feb 2026 – Present</div>
+          <div>
+            <div class="timeline-role">Senior Shopify Developer</div>
+            <div class="timeline-company">Cyfertech</div>
+            <div class="timeline-desc">Leading Shopify development initiatives, custom theme architecture, and client delivery.</div>
           </div>
         </div>
-      </div>
-      <div class="row pb-3" data-aos="fade-up">
-        <div class="col-md-4 py-4">
-          <div class="image-wrap">
-            <label for="job">Job Portal</label>
-            <a href="#">
-              <img src="https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/jobs_RBKVtm6Wc4.png?ik-sdk-version=javascript-1.4.3&updatedAt=1661232977823" />
-            </a>
+        <div class="timeline-item gsap-slide">
+          <div class="timeline-year">Nov 2022 – Feb 2026</div>
+          <div>
+            <div class="timeline-role">Fullstack Shopify Developer</div>
+            <div class="timeline-company">HOK Beauty Pvt. Ltd.</div>
+            <div class="timeline-desc">Built and managed 9+ stores. Drove 4× page speed gains and ₹15L+ cost savings through custom-built features replacing paid apps.</div>
           </div>
         </div>
-        <div class="col-md-4 py-4">
-          <div class="image-wrap">
-            <label for="wind">Wind Finance</label>
-            <a href="https://windfinance.in/">
-              <img src="https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/Wind_qdhVw55IA.png?ik-sdk-version=javascript-1.4.3&updatedAt=1661232975448" />
-            </a>
+        <div class="timeline-item gsap-slide">
+          <div class="timeline-year">Jan 2021 – Present</div>
+          <div>
+            <div class="timeline-role">Shopify Expert — Freelancer</div>
+            <div class="timeline-company">Self-employed · New Delhi</div>
+            <div class="timeline-desc">Custom stores, Shopify App Development, third-party integrations for clients across India and UK.</div>
           </div>
         </div>
-        <div class="col-md-4 py-4">
-          <div class="image-wrap">
-            <label for="infinity">Infinity</label>
-            <a href="#">
-              <img src="https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/infinity_screen_I8jCFGy2X.png?ik-sdk-version=javascript-1.4.3&updatedAt=1661232976661" />
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="row pb-5" data-aos="fade-up">
-        <div class="col-md-4 py-4">
-          <div class="image-wrap">
-            <label for="mehram">Mehram Apperals</label>
-            <a href="http://test.mehramapparels.com/">
-              <img src="https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/mehram_SyDBawX0-.png?ik-sdk-version=javascript-1.4.3&updatedAt=1661232978455" />
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4 py-4">
-          <div class="image-wrap">
-            <label for="mesua">Mesua Ferrea </label>
-            <a href="https://mesuaferrea.com/">
-              <img src="https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/mesua_fZdDZ7nSX.png?ik-sdk-version=javascript-1.4.3&updatedAt=1661234365711" />
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4 py-4">
-          <div class="image-wrap">
-            <label for="goodLuck">Good Luck</label>
-            <a href="#">
-              <img src="https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/Goodluck_lw3i4FVMEQ.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1661232976060" />
-            </a>
+        <div class="timeline-item gsap-slide">
+          <div class="timeline-year">Apr – Oct 2022</div>
+          <div>
+            <div class="timeline-role">Front-End Developer</div>
+            <div class="timeline-company">Agency Role</div>
+            <div class="timeline-desc">React JS, HTML/CSS, UX testing, and XD-to-code implementation.</div>
           </div>
         </div>
       </div>
     </div>
-  </section>
-  <!--/ Section Portfolio End /-->
-
-  <!--/ Section Testimonials Star /-->
-  <div class="testimonials paralax-mf bg-image"
-    style="background-image: url(https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/pexels-bri-schneiter-346529_fO4U16P-d.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1661233206234)">
-    <div class="overlay-mf"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div id="testimonial-mf" class="owl-carousel owl-theme">
-            <div class="testimonial-box">
-              <div class="author-test">
-                <img
-                  src="https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/formals_I3k-H9IQq.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1661232971484"
-                  alt="" class="rounded-circle b-shadow-a">
-                <span class="author">Let me Give you a Beautiful Website</span>
-              </div>
-              <div class="content-test">
-                <p class="description lead">
-                  
-                </p>
-                <a href="/Lalit-cv/Lalit_Thapa_CV.pdf"><button class="cvBtn">HIRE ME</button></a>
-                <!-- <span class="comit"><i class="fa fa-quote-right"></i></span> -->
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="about-right">
+      <p class="gsap-reveal">I'm a Senior Shopify Developer based in <strong>Faridabad, Haryana</strong>. I've spent 4.5+ years deep in the Shopify ecosystem — from theme Liquid and custom storefronts to Shopify App development with Remix and GraphQL.</p>
+      <p class="gsap-reveal">At HOK Beauty, I didn't just build pages. I replaced ₹15+ lakh worth of third-party apps with <strong>custom-built solutions</strong>, cut load times by 4×, and managed payment, logistics, and order workflows across 9 stores internationally.</p>
+      <p class="gsap-reveal">I bring both the <strong>technical depth</strong> of a fullstack developer and the <strong>commercial understanding</strong> of someone who's lived inside e-commerce operations. Whether it's a freelance build, a long-term team role, or a collab — I'm in.</p>
+      <div class="gsap-reveal" style="margin-top:36px;display:flex;gap:16px;flex-wrap:wrap">
+        <a href="https://github.com/Lalithapa" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);text-decoration:none;border:1px solid rgba(212,240,96,0.3);padding:10px 18px;text-transform:uppercase;letter-spacing:0.08em;transition:box-shadow 0.2s" onmouseover="this.style.boxShadow='0 0 18px rgba(212,240,96,0.35)'" onmouseout="this.style.boxShadow='none'">GitHub ↗</a>
+        <a href="https://www.linkedin.com/in/lalit-thapa-775073183" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--border2);padding:10px 18px;text-transform:uppercase;letter-spacing:0.08em">LinkedIn ↗</a>
       </div>
     </div>
   </div>
+</section>
 
-  <!--/ Section Blog Star /-->
-  <section id="blog" class="blog-mf sect-pt4 route">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12" data-aos="fade-up">
-          <div class="title-box text-center">
-            <h3 class="title-a">
-              HOBBY
-            </h3>
-            <!-- <p class="subtitle-a">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-            </p> -->
-            <div class="line-mf"></div>
-          </div>
-        </div>
+<!-- SKILLS -->
+<div class="glow-divider" id="div2"></div>
+<section class="section skills-section" id="skills">
+  <div class="section-label">Core Skills</div>
+  <div class="skills-grid">
+    <div class="skill-card gsap-card">
+      <div class="skill-icon">🛍️</div>
+      <div class="skill-name">Shopify Plus</div>
+      <div class="skill-desc">Custom theme dev, Liquid, metafields, multi-store ops, checkout extensions</div>
+      <div class="skill-bar"><div class="skill-fill" data-w="0.95"></div></div>
+    </div>
+    <div class="skill-card gsap-card">
+      <div class="skill-icon">⚛️</div>
+      <div class="skill-name">React / Next.js</div>
+      <div class="skill-desc">Headless Shopify, Hydrogen, storefront components, Remix architecture</div>
+      <div class="skill-bar"><div class="skill-fill" data-w="0.88"></div></div>
+    </div>
+    <div class="skill-card gsap-card">
+      <div class="skill-icon">🔌</div>
+      <div class="skill-name">Shopify App Dev</div>
+      <div class="skill-desc">Remix + Polaris, App Bridge, GraphQL Admin &amp; Storefront APIs</div>
+      <div class="skill-bar"><div class="skill-fill" data-w="0.82"></div></div>
+    </div>
+    <div class="skill-card gsap-card">
+      <div class="skill-icon">⚡</div>
+      <div class="skill-name">Performance</div>
+      <div class="skill-desc">Core Web Vitals, 4× speed improvements, lazy loading, critical CSS</div>
+      <div class="skill-bar"><div class="skill-fill" data-w="0.92"></div></div>
+    </div>
+    <div class="skill-card gsap-card">
+      <div class="skill-icon">🎨</div>
+      <div class="skill-name">Frontend Stack</div>
+      <div class="skill-desc">HTML/CSS, Tailwind, Alpine.js, jQuery, GSAP, Three.js</div>
+      <div class="skill-bar"><div class="skill-fill" data-w="0.90"></div></div>
+    </div>
+    <div class="skill-card gsap-card">
+      <div class="skill-icon">🔗</div>
+      <div class="skill-name">Integrations</div>
+      <div class="skill-desc">Payment gateways, logistics APIs, third-party apps, webhooks</div>
+      <div class="skill-bar"><div class="skill-fill" data-w="0.85"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<div class="glow-divider" id="div3"></div>
+<section class="section projects-section" id="projects">
+  <div class="section-label">Selected Work</div>
+  <div class="projects-grid">
+    <div class="project-card gsap-project">
+      <div>
+        <div class="project-num">01 — Beauty / India</div>
+        <div class="project-name">HOK Makeup Store</div>
+        <div class="project-desc">Full custom Shopify Plus theme built from scratch. Implemented wishlist, custom cart drawer, Instagram Stories-style UI, and 4× page speed improvement for India's premium makeup brand.</div>
+        <div class="project-tags"><span class="tag">Shopify Plus</span><span class="tag">Liquid</span><span class="tag">GSAP</span><span class="tag">Custom App</span></div>
       </div>
-      <div class="row" data-aos="fade-up">
-        <div class="col-md-4 py-3">
-          <div class="card card-blog">
-            <div class="card-img">
-              <a href="#"><img
-                  src="https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/IMG_1092_rKLBt3mpb.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1661233085358"
-                  alt="" class="hob_img"></a>
-            </div>
-            <div class="card-body">
-              <div class="card-category-box">
-                <div class="card-category">
-                  <h6 class="category">Travel</h6>
-                </div>
-              </div>
-              <h3 class="card-title"><a href="#">"Adventures are the best way to learn."</a></h3>
-              <p class="card-description">
-                Travel is my therapy as it nourish body, mind and soul. I love to travel especially Hill Station.
-              </p>
-            </div>
-
-          </div>
-        </div>
-        <div class="col-md-4 py-3">
-          <div class="card card-blog">
-            <div class="card-img">
-              <a href="#"><img
-                  src="https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/pexels-tara-winstead-6479556_g9iNfLEQ2.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1661234595794"
-                  alt="" class="hob_img"></a>
-            </div>
-            <div class="card-body">
-              <div class="card-category-box">
-                <div class="card-category">
-                  <h6 class="category">Bakery</h6>
-                </div>
-              </div>
-              <h3 class="card-title"><a href="#">"The secret to having an epically beloved bakery is consistency."</a></h3>
-              <p class="card-description">
-                Baking cookies is comforting, they are the sweetest little bit of comfort food. They are very bite-sized and personal.
-              </p>
-            </div>
-
-          </div>
-        </div>
-        <div class="col-md-4 py-3">
-          <div class="card card-blog">
-            <div class="card-img">
-              <a href="#"><img
-                  src="https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/snow_xy2LWpW8Ht.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1661232973550"
-                  alt="" class="hob_img"></a>
-            </div>
-            <div class="card-body">
-              <div class="card-category-box">
-                <div class="card-category">
-                  <h6 class="category">Sports</h6>
-                </div>
-              </div>
-              <h3 class="card-title"><a href="#">"Fond of playing different sports and it boost self-esteem"</a></h3>
-              <p class="card-description">
-                Clearly, it helps me to reach my fitness goals and maintain a healthy weight and body.
-              </p>
-            </div>
-
-          </div>
-        </div>
+      <div class="project-right">
+        <a href="https://www.hokmakeup.com" target="_blank" class="project-link">Visit ↗</a>
+        <div class="project-type">Live Store</div>
       </div>
     </div>
-  </section>
-  <!--/ Section Blog End /-->
-
-  <!--/ Section Contact-Footer Star /-->
-  <section class="paralax-mf footer-paralax bg-image sect-mt4 route"
-    style="background-image: url(https://ik.imagekit.io/wut37xtrk/Lalit_Portfolio/pexels-bri-schneiter-346529_fO4U16P-d.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1661233206234)">
-    <div class="overlay-mf"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="contact-mf">
-            <div class="screen-header">
-              <div class="screen-header-left">
-                <div class="screen-header-button close"></div>
-                <div class="screen-header-button maximize"></div>
-                <div class="screen-header-button minimize"></div>
-              </div>
-              <div class="screen-header-right">
-                <div class="screen-header-ellipsis"></div>
-                <div class="screen-header-ellipsis"></div>
-                <div class="screen-header-ellipsis"></div>
-              </div>
-            </div>
-            <div id="contact" class="box-shadow-full text-white" style="background:linear-gradient(90deg,#06beb6 , #48b1bf);">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="title-box-2">
-                    <h5 class="title-left">
-                     Contact Me
-                    </h5>
-                  </div>
-                  <div>
-                    <form action="https://formsubmit.co/lalithapaji@gmail.com" method="POST" role="form" class="contactForm" name="contact_form">
-                      <div class="row">
-                        <div class="col-md-12 mb-3">
-                          <div class="form-group">
-                            <input type="text" name="name" class="form-control" id="name" placeholder="Your Name"
-                              data-rule="minlen:4" data-msg="Please enter at least 4 chars" required />
-                          </div>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                          <div class="form-group">
-                         
-                            <input type="hidden" name="_subject" value="New email woooo!">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Your Email"
-                              data-rule="email" data-msg="Please enter a valid email" required/>
-                          </div>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                          <div class="form-group">
-                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject"
-                              data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" required/>
-                          </div>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                          <div class="form-group">
-                            <textarea class="form-control" name="message" rows="5" data-rule="required"
-                              data-msg="Please write something for us" placeholder="Message" required></textarea>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <button type="submit" class="cvBtn" value="Submit">Send Message</button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="title-box-2 pt-4 pt-md-0">
-                    <h5 class="title-left">
-                      Get in Touch
-                    </h5>
-                  </div>
-                  <div class="more-info">
-                    <p class="lead">
-                      I work as a web developer. Every day, I spend my entire day experimenting with HTML, CSS, BOOTSTRAP, JS, and React,
-                      among other things. I enjoy creating websites with the end user in mind. I'm curious, and I enjoy work that pushes me
-                      to learn new things and stretch in new directions.
-                    </p>
-                    <ul class="list-ico">
-                      <li><span class="ion-ios-location text-white"></span>Panchsheel Colony Part-1 Ismailpur , Faridabad HR-121003
-                      </li>
-                      <li><span class="ion-ios-telephone text-white"></span> +91-9871776722</li>
-                      <li><span class="ion-email text-white"></span> lalithapaji@gmail.com</li>
-                    </ul>
-                  </div>
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="project-card gsap-project">
+      <div>
+        <div class="project-num">02 — Beauty / UK</div>
+        <div class="project-name">Revolution Beauty India</div>
+        <div class="project-desc">Built end-to-end Shopify storefront for the India launch of Revolution Beauty UK. Custom wishlist, payment gateway integration, and responsive theme development.</div>
+        <div class="project-tags"><span class="tag">Shopify</span><span class="tag">Liquid</span><span class="tag">Payment Integration</span></div>
+      </div>
+      <div class="project-right">
+        <a href="https://revolutionbeauty.in" target="_blank" class="project-link">Visit ↗</a>
+        <div class="project-type">Live Store</div>
       </div>
     </div>
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="copyright-box">
-              <p>
-                <div class="socials">
-                  <ul>
-                    <li><a href="https://www.facebook.com/lalit.thapa.7902/"><span class="ico-circle"><i class="ion-social-facebook"></i></span></a></li>
-                    <li><a href="https://www.instagram.com/oraiiios/"><span class="ico-circle"><i class="ion-social-instagram"></i></span></a></li>
-                    <li><a href="https://wa.me/9871776722"><span class="ico-circle"><i class="ion-social-whatsapp-outline"></i></span></a></li>
-                    <li><a href="https://github.com/Lalithapa"><span class="ico-circle"><i class="ion-social-github"></i></span></a></li>
-                  </ul>
-                </div>
-              </p>
-              <p class="copyright">&copy; Copyright <strong>Lalit Thapa</strong>. All Rights Reserved</p>
-            </div>
-          </div>
-        </div>
+    <div class="project-card gsap-project">
+      <div>
+        <div class="project-num">03 — Lifestyle / UK</div>
+        <div class="project-name">The Ow Store</div>
+        <div class="project-desc">Complete Shopify store for UK market. Cross-border logistics, currency handling, and custom product experience tailored for international customers.</div>
+        <div class="project-tags"><span class="tag">Shopify</span><span class="tag">Multi-region</span><span class="tag">Logistics API</span></div>
       </div>
-    </footer>
-  </section>
-  <!--/ Section Contact-footer End /-->
-  <div class="social_drop">
-    <div class="content_share">
-      <input type="checkbox" id="click">
-      <label for="click" class="share_btn">
-        <span class="fa fa-share"></span>
-        <a href="https://wa.me/9871776722"><span class="fa fa-whatsapp"></span></a>
-        <a href="https://www.instagram.com/oraiiios/"><span class="fa fa-instagram"></span></a>
-        <a href="https://www.facebook.com/lalit.thapa.7902/"><span class="fa fa-facebook"></span></a>
-      </label>
+      <div class="project-right">
+        <a href="https://theowstore.com" target="_blank" class="project-link">Visit ↗</a>
+        <div class="project-type">Live Store</div>
+      </div>
     </div>
+    <div class="project-card gsap-project">
+      <div>
+        <div class="project-num">04 — App Dev / GitHub</div>
+        <div class="project-name">Shopify Wishlist App</div>
+        <div class="project-desc">Open-source Shopify App Extension — a full Wishlist app for Shopify merchants. Built with JavaScript, Shopify App Bridge, and the Storefront API.</div>
+        <div class="project-tags"><span class="tag">Shopify App</span><span class="tag">JavaScript</span><span class="tag">App Bridge</span><span class="tag">Open Source</span></div>
+      </div>
+      <div class="project-right">
+        <a href="https://github.com/Lalithapa/Shopify-App-Extension" target="_blank" class="project-link">View Code ↗</a>
+        <div class="project-type">Open Source</div>
+      </div>
     </div>
-  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-  <div id="preloader"></div>
+    <div class="project-card gsap-project">
+      <div>
+        <div class="project-num">05 — Beauty / India</div>
+        <div class="project-name">L.A. Girl India</div>
+        <div class="project-desc">Shopify storefront for the India launch of global cosmetics brand L.A. Girl. Custom theme, third-party integrations, and performance-tuned product pages.</div>
+        <div class="project-tags"><span class="tag">Shopify</span><span class="tag">Liquid</span><span class="tag">UI/UX</span></div>
+      </div>
+      <div class="project-right">
+        <a href="https://lagirlindia.com" target="_blank" class="project-link">Visit ↗</a>
+        <div class="project-type">Live Store</div>
+      </div>
+    </div>
+    <div class="project-card gsap-project">
+      <div>
+        <div class="project-num">06 — Tool / Script</div>
+        <div class="project-name">Blinkit Price Scraper</div>
+        <div class="project-desc">Python scraper for monitoring Blinkit product prices — useful for competitive pricing analysis in e-commerce. Shows breadth of technical toolkit beyond Shopify.</div>
+        <div class="project-tags"><span class="tag">Python</span><span class="tag">Scraping</span><span class="tag">Ecommerce Analytics</span></div>
+      </div>
+      <div class="project-right">
+        <a href="https://github.com/Lalithapa/Blinkit-Scrapper" target="_blank" class="project-link">View Code ↗</a>
+        <div class="project-type">Tool / Script</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- JavaScript Libraries -->
-  <script src="lib/jquery/jquery.min.js"></script>
-  <script src="lib/jquery/jquery-migrate.min.js"></script>
-  <script src="lib/popper/popper.min.js"></script>
-  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
-  <script src="lib/easing/easing.min.js"></script>
-  <script src="lib/counterup/jquery.waypoints.min.js"></script>
-  <script src="lib/counterup/jquery.counterup.js"></script>
-  <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-  <script src="lib/lightbox/js/lightbox.min.js"></script>
-  <script src="lib/typed/typed.min.js"></script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<!-- KEY WINS -->
+<div class="glow-divider" id="div4"></div>
+<section class="section acc-section" id="wins">
+  <div class="section-label">Key Wins</div>
+  <div class="acc-grid">
+    <div class="acc-card gsap-card">
+      <div class="acc-num">01</div>
+      <div class="acc-title">₹15 Lakh+ Cost Savings</div>
+      <div class="acc-body">Replaced paid third-party Shopify apps with custom-built features across HOK Beauty's store ecosystem — delivering the same functionality at zero recurring cost.</div>
+    </div>
+    <div class="acc-card gsap-card">
+      <div class="acc-num">02</div>
+      <div class="acc-title">4× Page Speed Improvement</div>
+      <div class="acc-body">Led performance optimization initiatives delivering a 4× improvement in website load speed, resulting in better Core Web Vitals scores and measurably higher conversion rates.</div>
+    </div>
+    <div class="acc-card gsap-card">
+      <div class="acc-num">03</div>
+      <div class="acc-title">Custom Instagram Stories UI</div>
+      <div class="acc-body">Designed and implemented a native-feeling Instagram Stories-style browsing feature on Pigmentplay.com — a fully custom Liquid/JS solution that increased time-on-site engagement.</div>
+    </div>
+    <div class="acc-card gsap-card">
+      <div class="acc-num">04</div>
+      <div class="acc-title">9+ Stores Across 2 Countries</div>
+      <div class="acc-body">Managed end-to-end operations across 9+ Shopify stores spanning India and the UK — payment gateways, logistics integrations, order workflows, and storefront dev all in one role.</div>
+    </div>
+  </div>
+</section>
 
-  <!-- Template Main Javascript File -->
-  <script>
-    AOS.init();
-  </script>
-  <script src="js/main.js"></script>
+<!-- CONTACT -->
+<div class="glow-divider" id="div5"></div>
+<section class="section contact-section" id="contact">
+  <div class="section-label">Get in Touch</div>
+  <div class="contact-inner">
+    <div class="gsap-reveal">
+      <h2 class="contact-heading">Let's build something <span class="accent">great.</span></h2>
+      <p class="contact-sub">Open to senior roles, freelance Shopify projects, and collaborations. Based in Faridabad — available remotely worldwide.</p>
+      <div class="email-big">
+        <a href="mailto:lalitthapa2108@gmail.com">lalitthapa2108@gmail.com</a>
+      </div>
+      <p style="margin-top:16px;font-family:'DM Mono',monospace;font-size:13px;color:var(--muted)">+91 9315759977</p>
+    </div>
+    <div class="contact-links gsap-reveal">
+      <a href="https://github.com/Lalithapa" target="_blank" class="contact-link">
+        <div><div class="contact-link-label">GitHub</div><div class="contact-link-val">github.com/Lalithapa</div></div>
+        <div class="contact-arrow">↗</div>
+      </a>
+      <a href="https://www.linkedin.com/in/lalit-thapa-775073183" target="_blank" class="contact-link">
+        <div><div class="contact-link-label">LinkedIn</div><div class="contact-link-val">Lalit Thapa</div></div>
+        <div class="contact-arrow">↗</div>
+      </a>
+      <a href="https://twitter.com/lalit_thapa22" target="_blank" class="contact-link">
+        <div><div class="contact-link-label">X / Twitter</div><div class="contact-link-val">@lalit_thapa22</div></div>
+        <div class="contact-arrow">↗</div>
+      </a>
+      <a href="https://wa.me/919315759977" target="_blank" class="contact-link">
+        <div><div class="contact-link-label">WhatsApp</div><div class="contact-link-val">+91 9315759977</div></div>
+        <div class="contact-arrow">↗</div>
+      </a>
+    </div>
+  </div>
+</section>
 
+<footer>
+  <div class="footer-left">© 2026 Lalit Thapa — Senior Shopify Developer</div>
+  <div class="footer-right">Faridabad, India · Available Remotely</div>
+</footer>
+
+<!-- THREE.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ════════════════════════════════════════
+   1. BACKGROUND PARTICLES (hero canvas)
+════════════════════════════════════════ */
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, canvas.offsetWidth/canvas.offsetHeight, 0.1, 1000);
+  camera.position.z = 80;
+  const COUNT = 700;
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(COUNT*3);
+  const spd = new Float32Array(COUNT);
+  for(let i=0;i<COUNT;i++){
+    pos[i*3]   = (Math.random()-0.5)*220;
+    pos[i*3+1] = (Math.random()-0.5)*160;
+    pos[i*3+2] = (Math.random()-0.5)*80;
+    spd[i] = Math.random()*0.006+0.002;
+  }
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  const mat = new THREE.PointsMaterial({color:0xd4f060,size:0.5,transparent:true,opacity:0.3,sizeAttenuation:true});
+  scene.add(new THREE.Points(geo,mat));
+  let mx=0,my=0;
+  window.addEventListener('mousemove',e=>{mx=(e.clientX/window.innerWidth-0.5)*0.25;my=(e.clientY/window.innerHeight-0.5)*0.18;});
+  function tick(){
+    requestAnimationFrame(tick);
+    for(let i=0;i<COUNT;i++){pos[i*3+1]+=spd[i];if(pos[i*3+1]>80)pos[i*3+1]=-80;}
+    geo.attributes.position.needsUpdate=true;
+    camera.position.x+=(mx*8-camera.position.x)*0.04;
+    camera.position.y+=(-my*5-camera.position.y)*0.04;
+    renderer.render(scene,camera);
+  }
+  tick();
+  window.addEventListener('resize',()=>{renderer.setSize(canvas.offsetWidth,canvas.offsetHeight);camera.aspect=canvas.offsetWidth/canvas.offsetHeight;camera.updateProjectionMatrix();});
+})();
+
+
+/* ════════════════════════════════════════
+   2. HERO 3-D GLOWING GEO OBJECT
+════════════════════════════════════════ */
+(function(){
+  const canvas = document.getElementById('geo-canvas');
+  if(!canvas) return;
+
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(W,H);
+  renderer.shadowMap.enabled = false;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, W/H, 0.1, 500);
+  camera.position.set(0,0,7);
+
+  /* ── Lights ── */
+  const ambient = new THREE.AmbientLight(0xffffff, 0.15);
+  scene.add(ambient);
+
+  // Key glow light — lime accent
+  const keyLight = new THREE.PointLight(0xd4f060, 6, 20);
+  keyLight.position.set(3,3,4);
+  scene.add(keyLight);
+
+  // Rim light — cool blue
+  const rimLight = new THREE.PointLight(0x60d4f0, 2, 15);
+  rimLight.position.set(-3,-2,2);
+  scene.add(rimLight);
+
+  // Scroll-driven fill light (starts dim)
+  const scrollLight = new THREE.PointLight(0xd4f060, 0, 25);
+  scrollLight.position.set(0,0,5);
+  scene.add(scrollLight);
+
+  /* ── Core Icosahedron ── */
+  const icoGeo = new THREE.IcosahedronGeometry(1.8, 1);
+  const icoMat = new THREE.MeshStandardMaterial({
+    color: 0x0d0d0d,
+    metalness: 0.9,
+    roughness: 0.15,
+    envMapIntensity: 1,
+  });
+  const ico = new THREE.Mesh(icoGeo, icoMat);
+  scene.add(ico);
+
+  /* ── Wireframe shell ── */
+  const wireMat = new THREE.MeshBasicMaterial({
+    color: 0xd4f060,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.18,
+  });
+  const wire = new THREE.Mesh(new THREE.IcosahedronGeometry(1.82,1), wireMat);
+  scene.add(wire);
+
+  /* ── Outer glow shell (slightly larger, additive) ── */
+  const glowGeo = new THREE.IcosahedronGeometry(2.05, 1);
+  const glowMat = new THREE.MeshBasicMaterial({
+    color: 0xd4f060,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.06,
+  });
+  const glowShell = new THREE.Mesh(glowGeo, glowMat);
+  scene.add(glowShell);
+
+  /* ── Orbiting ring ── */
+  const ringGeo = new THREE.TorusGeometry(2.5, 0.012, 8, 80);
+  const ringMat = new THREE.MeshBasicMaterial({color:0xd4f060, transparent:true, opacity:0.35});
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = Math.PI/2.5;
+  scene.add(ring);
+
+  /* ── Second ring, offset ── */
+  const ring2 = new THREE.Mesh(
+    new THREE.TorusGeometry(2.8, 0.008, 8, 80),
+    new THREE.MeshBasicMaterial({color:0xd4f060, transparent:true, opacity:0.15})
+  );
+  ring2.rotation.x = Math.PI/3;
+  ring2.rotation.z = Math.PI/4;
+  scene.add(ring2);
+
+  /* ── Small orbiting satellite dot ── */
+  const dotGeo = new THREE.SphereGeometry(0.06, 8, 8);
+  const dotMat = new THREE.MeshBasicMaterial({color:0xd4f060});
+  const dot = new THREE.Mesh(dotGeo, dotMat);
+  scene.add(dot);
+
+  /* ── Mouse tracking ── */
+  let targetRotX=0, targetRotY=0;
+  window.addEventListener('mousemove', e=>{
+    targetRotY = (e.clientX/window.innerWidth - 0.5) * 1.2;
+    targetRotX = (e.clientY/window.innerHeight - 0.5) * 0.8;
+  });
+
+  /* ── Scroll-driven glow intensity ── */
+  let scrollGlow = 0;
+  window.addEventListener('scroll', ()=>{
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    const progress = Math.min(window.scrollY / maxScroll, 1);
+    scrollGlow = progress;
+
+    // Drive scroll light intensity 0→10
+    scrollLight.intensity = progress * 10;
+    // Drive wireframe opacity up
+    wireMat.opacity = 0.18 + progress * 0.32;
+    glowMat.opacity = 0.06 + progress * 0.18;
+    // Expand glow halo
+    const glow = document.getElementById('geo-glow');
+    if(glow){
+      glow.style.opacity = 0.4 + progress * 0.6;
+      glow.style.transform = `translateY(-50%) scale(${1 + progress * 0.5})`;
+    }
+  });
+
+  /* ── Fade in on load ── */
+  setTimeout(()=>{
+    gsap.to(canvas, {opacity:1, duration:1.5, ease:'power2.out'});
+    gsap.to(document.getElementById('geo-glow'), {opacity:0.4, duration:1.5, ease:'power2.out'});
+  }, 600);
+
+  /* ── Render loop ── */
+  let t = 0;
+  function tick(){
+    requestAnimationFrame(tick);
+    t += 0.008;
+
+    // Smooth mouse follow
+    ico.rotation.y += (targetRotY - ico.rotation.y) * 0.04;
+    ico.rotation.x += (targetRotX - ico.rotation.x) * 0.04;
+    wire.rotation.y = ico.rotation.y;
+    wire.rotation.x = ico.rotation.x;
+    glowShell.rotation.y = ico.rotation.y * 0.8;
+    glowShell.rotation.x = ico.rotation.x * 0.8;
+
+    // Idle slow spin
+    ico.rotation.y += 0.003;
+    wire.rotation.y += 0.003;
+    glowShell.rotation.y += 0.002;
+    glowShell.rotation.z += 0.001;
+
+    // Ring rotation
+    ring.rotation.z += 0.004;
+    ring2.rotation.z -= 0.003;
+    ring2.rotation.y += 0.002;
+
+    // Satellite orbit
+    dot.position.x = Math.cos(t*1.4) * 2.5;
+    dot.position.z = Math.sin(t*1.4) * 2.5;
+    dot.position.y = Math.sin(t*0.7) * 0.8;
+
+    // Pulsing key light
+    keyLight.intensity = 5 + Math.sin(t*2)*1.5 + scrollGlow*6;
+
+    // Float up/down
+    const floatY = Math.sin(t*0.8)*0.12;
+    ico.position.y = floatY;
+    wire.position.y = floatY;
+    glowShell.position.y = floatY;
+    ring.position.y = floatY * 0.5;
+
+    renderer.render(scene, camera);
+  }
+  tick();
+
+  window.addEventListener('resize',()=>{
+    const nw=canvas.offsetWidth, nh=canvas.offsetHeight;
+    renderer.setSize(nw,nh);
+    camera.aspect=nw/nh;
+    camera.updateProjectionMatrix();
+  });
+})();
+
+
+/* ════════════════════════════════════════
+   3. HERO BG TEXT PARALLAX
+════════════════════════════════════════ */
+gsap.to('#hero-bg-text',{
+  yPercent:40, ease:'none',
+  scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:1}
+});
+
+/* ════════════════════════════════════════
+   4. GLOW DIVIDERS  — fire on scroll-enter
+════════════════════════════════════════ */
+document.querySelectorAll('.glow-divider').forEach(el=>{
+  ScrollTrigger.create({
+    trigger:el, start:'top 95%', once:true,
+    onEnter:()=>{
+      el.classList.remove('lit');
+      void el.offsetWidth; // reflow to reset animation
+      el.classList.add('lit');
+    }
+  });
+});
+
+/* ════════════════════════════════════════
+   5. PROGRESS BAR + NAV SCROLL STATE
+════════════════════════════════════════ */
+window.addEventListener('scroll',()=>{
+  const pct = window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
+  document.getElementById('progress-bar').style.width=pct+'%';
+  document.getElementById('main-nav').classList.toggle('scrolled',window.scrollY>60);
+});
+
+/* ════════════════════════════════════════
+   6. HERO ENTRANCE
+════════════════════════════════════════ */
+const heroTl = gsap.timeline({delay:0.3});
+heroTl
+  .to('.hero-name .line1',{y:0,duration:1.0,ease:'power4.out'})
+  .to('.hero-name .line2',{y:0,duration:1.0,ease:'power4.out'},'-=0.75')
+  .to('#hero-tag',{opacity:1,duration:0.6,ease:'power2.out'},'-=0.4')
+  .to('#hero-desc',{opacity:1,y:0,duration:0.6,ease:'power2.out'},'-=0.3')
+  .to('.nav-logo,.nav-cta',{opacity:1,duration:0.5,stagger:0.1,ease:'power2.out'},'-=0.4')
+  .to('#hero-scroll',{opacity:1,duration:0.5,ease:'power2.out'},'-=0.2');
+
+/* ════════════════════════════════════════
+   7. STAT COUNTERS
+════════════════════════════════════════ */
+function animateCounter(el){
+  const target=+el.dataset.target;
+  const prefix=el.dataset.prefix||'';
+  const suffix=el.dataset.suffix||'';
+  gsap.fromTo({val:0},{val:target},{
+    duration:1.8,ease:'power2.out',
+    onUpdate:function(){el.textContent=prefix+Math.round(this.targets()[0].val)+suffix;}
+  });
+}
+ScrollTrigger.create({
+  trigger:'#hero-stats',start:'top 85%',once:true,
+  onEnter:()=>document.querySelectorAll('.stat-num').forEach(animateCounter)
+});
+
+/* ════════════════════════════════════════
+   8. SCROLL ANIMATIONS
+════════════════════════════════════════ */
+gsap.utils.toArray('.section-label').forEach(el=>{
+  gsap.from(el,{opacity:0,x:-30,duration:0.7,ease:'power2.out',
+    scrollTrigger:{trigger:el,start:'top 88%',once:true}});
+});
+
+gsap.utils.toArray('.about-heading').forEach(el=>{
+  gsap.from(el,{opacity:0,y:50,duration:0.9,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 85%',once:true}});
+});
+
+gsap.utils.toArray('.gsap-slide').forEach((el,i)=>{
+  gsap.from(el,{opacity:0,x:-40,duration:0.65,ease:'power2.out',delay:i*0.1,
+    scrollTrigger:{trigger:el,start:'top 88%',once:true}});
+});
+
+gsap.utils.toArray('.gsap-reveal').forEach(el=>{
+  gsap.from(el,{opacity:0,y:36,duration:0.75,ease:'power2.out',
+    scrollTrigger:{trigger:el,start:'top 87%',once:true}});
+});
+
+gsap.utils.toArray('.gsap-card').forEach((el,i)=>{
+  gsap.from(el,{opacity:0,y:40,scale:0.96,duration:0.6,ease:'power2.out',delay:(i%3)*0.08,
+    scrollTrigger:{trigger:el,start:'top 88%',once:true,
+      onEnter:()=>{
+        const fill=el.querySelector('.skill-fill');
+        if(fill) gsap.to(fill,{scaleX:parseFloat(fill.dataset.w),duration:1.2,ease:'power2.out',delay:0.15});
+      }
+    }
+  });
+});
+
+gsap.utils.toArray('.gsap-project').forEach((el,i)=>{
+  gsap.from(el,{opacity:0,x:i%2===0?-50:50,duration:0.75,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 88%',once:true}});
+});
+
+// Hero name drift on scroll
+ScrollTrigger.create({
+  trigger:'.hero',start:'top top',end:'30% top',scrub:0.5,
+  onUpdate:self=>{
+    gsap.set('.hero-name .line1',{x:self.progress*-30});
+    gsap.set('.hero-name .line2',{x:self.progress*30});
+  }
+});
+
+gsap.from('footer',{opacity:0,y:20,duration:0.7,ease:'power2.out',
+  scrollTrigger:{trigger:'footer',start:'top 95%',once:true}});
+
+/* ════════════════════════════════════════
+   9. SKILL CARD — cursor glow follow
+════════════════════════════════════════ */
+document.querySelectorAll('.skill-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+    card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
+  });
+});
+
+</script>
 </body>
-
 </html>
